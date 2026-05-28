@@ -1,5 +1,6 @@
 package org.agty.elfiumexpress;
 
+import org.agty.elfiumexpress.dao.PermanentConnection;
 import org.agty.elfiumexpress.storage.service.StorageService;
 import org.agty.elfiumexpress.storage.types.FileMime;
 import org.springframework.boot.CommandLineRunner;
@@ -8,9 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class Application {
+public class ElfiumExpressApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(ElfiumExpressApplication.class, args);
     }
 
     @Bean
@@ -18,6 +19,7 @@ public class Application {
         return (args) -> {
             storageService.init();
             FileMime.init();
+            PermanentConnection.getConnection().getConnector().getConnection();
         };
     }
 }

@@ -73,7 +73,7 @@ public class UploadedFileUtils {
         try {
             String contentType = getContentType(file.getInputStream());
 
-            if (!AgtyUtils.stringIsExists(contentType)) {
+            if (AgtyUtils.stringIsNullOrEmpty(contentType)) {
                 contentType = "application/octet-stream";
             }
 

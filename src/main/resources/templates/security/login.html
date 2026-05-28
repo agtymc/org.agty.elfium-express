@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <th:block th:replace="~{index/head.html::indexHead}"></th:block>
+</head>
+<body>
+  <div class="form-block">
+    <div class="form-block-inner">
+      <form th:action="@{/login}" method="post" enctype="multipart/form-data">
+          <h1 class="center" th:text="${title}"></h1>
+
+          <!-- error message -->
+          <div th:if="${param.error}">
+              <div class="red">Не верный логин или пароль</div>
+          </div>
+
+          <!-- logout message -->
+          <div th:if="${param.logout}">
+              <div class="blue">Вы вышли</div>
+          </div>
+
+          <div class="horizontal-field">
+            <label for="username">Логин</label>
+            <input type="text" name="username" id="username" value="" required />
+          </div>
+
+          <div class="horizontal-field">
+            <label for="pass">Пароль</label>
+            <input type="password" name="password" id="pass" value="" required />
+          </div>
+
+          <div class="center horizontal-field">
+                <a href="/registration" class="submit">Регистрация</a>
+                <input type="submit" value="Войти" class="login-button" />
+          </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

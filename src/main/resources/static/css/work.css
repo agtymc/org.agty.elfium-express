@@ -105,8 +105,17 @@ input, textarea, select {
     border-radius: 5px;
 }
 
+.horizontal-field {
+    margin: 10px 0 10px 0;
+}
+
 select {
     width: auto;
+}
+
+label {
+    font-size: 21px;
+    color: #fff;
 }
 
 input:focus, textarea:focus, select:focus {
@@ -132,6 +141,26 @@ input[type="submit"]:hover,
 a.submit:hover {
     border: 1px #900 solid;
     background-color: #fff;
+}
+
+input[type="submit"].login-button{
+    width: 100%;
+    max-width: 200px;
+    color: #000;
+}
+
+input[type="submit"].login-button:hover {
+    color: #060;
+}
+
+input[type="submit"].registration-button{
+    width: 100%;
+    max-width: 350px;
+    color: #000;
+}
+
+input[type="submit"].registration-button:hover {
+    color: #060;
 }
 
 input[type="submit"].remove-button,
