@@ -1,0 +1,13 @@
+# Database connection example
+db.default.driver = pgsql
+db.default.server = localhost
+db.default.port = 5432
+db.default.user = your_db_user
+db.default.password = your_db_password
+db.default.database = your_db_name
+db.default.schema = public
+db.default.pfx =
+db.default.encoding = UTF-8
+db.default.serverTimeZone = UTC
+db.default.logquery = false
+db.default.debug = false
