@@ -1,8 +1,9 @@
 package org.agty.elfiumexpress.config;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
@@ -10,17 +11,25 @@ import javax.sql.DataSource;
 public class DataSourceConfig {
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://%s:%s/%s?currentSchema=%s".formatted(
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setPoolName(LocalConfig.getString("session.datasource.pool-name", "spring-users-session-pool"));
+        hikariConfig.setDriverClassName("org.postgresql.Driver");
+        hikariConfig.setJdbcUrl("jdbc:postgresql://%s:%s/%s?currentSchema=%s".formatted(
                 requireString("db.default.server"),
                 requireString("db.default.port"),
                 requireString("db.default.database"),
                 requireString("db.default.schema")
         ));
-        dataSource.setUsername(requireString("db.default.user"));
-        dataSource.setPassword(requireString("db.default.password"));
-        return dataSource;
+        hikariConfig.setUsername(requireString("db.default.user"));
+        hikariConfig.setPassword(requireString("db.default.password"));
+        hikariConfig.setMaximumPoolSize(LocalConfig.getInt("session.datasource.maximum-pool-size", 10));
+        hikariConfig.setMinimumIdle(LocalConfig.getInt("session.datasource.minimum-idle", 2));
+        hikariConfig.setConnectionTimeout(LocalConfig.getLong("session.datasource.connection-timeout-ms", 30000));
+        hikariConfig.setIdleTimeout(LocalConfig.getLong("session.datasource.idle-timeout-ms", 600000));
+        hikariConfig.setMaxLifetime(LocalConfig.getLong("session.datasource.max-lifetime-ms", 1800000));
+        hikariConfig.setAutoCommit(true);
+        hikariConfig.setConnectionTestQuery("SELECT 1");
+        return new HikariDataSource(hikariConfig);
     }
 
     private String requireString(String key) {
