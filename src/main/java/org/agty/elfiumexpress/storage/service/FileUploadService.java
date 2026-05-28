@@ -1,7 +1,7 @@
 package org.agty.elfiumexpress.storage.service;
 
+import org.agty.elfiumexpress.repository.FileUploadRepository;
 import org.agty.elfiumexpress.storage.entity.UploadedFile;
-import org.agty.elfiumexpress.storage.repository.FileUploadRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,10 +10,10 @@ import java.util.List;
 
 @Service
 public class FileUploadService {
-    private final FileUploadRepo fileUploadRepo;
+    private final FileUploadRepository fileUploadRepository;
 
-    public FileUploadService(FileUploadRepo fileUploadRepo) {
-        this.fileUploadRepo = fileUploadRepo;
+    public FileUploadService(FileUploadRepository fileUploadRepository) {
+        this.fileUploadRepository = fileUploadRepository;
     }
 
     public List<UploadedFile> save(MultipartFile[] files) {
@@ -23,7 +23,7 @@ public class FileUploadService {
 
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
-                UploadedFile uploadedFile = fileUploadRepo.store(file);
+                UploadedFile uploadedFile = fileUploadRepository.store(file);
                 if (uploadedFile != null) uploadedFiles.add(uploadedFile);
             }
         }
@@ -32,6 +32,6 @@ public class FileUploadService {
     }
 
     public UploadedFile getFile(String filename) {
-        return fileUploadRepo.findByName(filename);
+        return fileUploadRepository.findByName(filename);
     }
 }

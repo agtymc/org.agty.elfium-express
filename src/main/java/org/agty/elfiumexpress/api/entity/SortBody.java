@@ -1,19 +1,22 @@
 package org.agty.elfiumexpress.api.entity;
 
 public class SortBody {
-    private String id;
+    private Long id;
     private int align;
 
-    public SortBody(String id, int align) {
+    public SortBody() {
+    }
+
+    public SortBody(Long id, int align) {
         this.id = id;
         this.align = align;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

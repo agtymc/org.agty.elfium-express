@@ -1,7 +1,7 @@
 package org.agty.elfiumexpress.utils;
 
 import org.agty.connector.Connector;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class ParsePage {
         Pattern pattern = Pattern.compile("<title[^>]*?>(.*?)<\\/title>", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS);
         Matcher matcher = pattern.matcher(this.pageContent);
         if (matcher.find()) {
-            this.parsedData.put("title", StringEscapeUtils.unescapeHtml(matcher.group(1)));
+            this.parsedData.put("title", StringEscapeUtils.unescapeHtml4(matcher.group(1)));
         }
 
         /*Pattern patternBody = Pattern.compile("<title[^>]*?>(.*?)<\\/title>", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS);

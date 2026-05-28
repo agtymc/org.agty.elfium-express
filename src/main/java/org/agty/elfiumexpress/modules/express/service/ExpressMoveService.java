@@ -1,30 +1,31 @@
 package org.agty.elfiumexpress.modules.express.service;
 
 import org.agty.elfiumexpress.api.entity.ActionItem;
-import org.agty.elfiumexpress.modules.express.repository.ExpressGroupRepo;
-import org.agty.elfiumexpress.modules.express.repository.ExpressPanelRepo;
+import org.agty.elfiumexpress.repository.ExpressGroupRepository;
+import org.agty.elfiumexpress.repository.ExpressPanelRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ExpressMoveService {
-    ExpressPanelRepo expressPanelRepo;
-    ExpressGroupRepo expressGroupRepo;
+    private final ExpressPanelRepository expressPanelRepository;
+    private final ExpressGroupRepository expressGroupRepository;
 
-    public ExpressMoveService(ExpressPanelRepo expressPanelRepo, ExpressGroupRepo expressGroupRepo) {
-        this.expressPanelRepo = expressPanelRepo;
-        this.expressGroupRepo = expressGroupRepo;
+    public ExpressMoveService(ExpressPanelRepository expressPanelRepository,
+                              ExpressGroupRepository expressGroupRepository) {
+        this.expressPanelRepository = expressPanelRepository;
+        this.expressGroupRepository = expressGroupRepository;
     }
 
     public void move(ActionItem[] actionItems) {
-        for(ActionItem actionItem : actionItems) {
+        for (ActionItem actionItem : actionItems) {
             if (actionItem == null) continue;
 
-            if (actionItem.getObject().equals("panel")) {
-                expressPanelRepo.move(actionItem);
+            if ("panel".equals(actionItem.getObject())) {
+                expressPanelRepository.move(actionItem);
             }
 
-            if (actionItem.getObject().equals("group")) {
-                expressGroupRepo.move(actionItem);
+            if ("group".equals(actionItem.getObject())) {
+                expressGroupRepository.move(actionItem);
             }
         }
     }

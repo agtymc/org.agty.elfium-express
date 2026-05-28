@@ -1,6 +1,6 @@
 package org.agty.elfiumexpress;
 
-import org.agty.elfiumexpress.dao.PermanentConnection;
+import org.agty.elfiumexpress.dao.ConnectionPool;
 import org.agty.elfiumexpress.storage.service.StorageService;
 import org.agty.elfiumexpress.storage.types.FileMime;
 import org.springframework.boot.CommandLineRunner;
@@ -19,7 +19,9 @@ public class ElfiumExpressApplication {
         return (args) -> {
             storageService.init();
             FileMime.init();
-            PermanentConnection.getConnection().getConnector().getConnection();
+            try (var sql = ConnectionPool.POOL.borrow()) {
+                sql.sql().getConnector().getConnection();
+            }
         };
     }
 }

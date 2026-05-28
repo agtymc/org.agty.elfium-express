@@ -2,10 +2,13 @@ package org.agty.elfiumexpress.api.entity;
 
 public class ActionItem {
     private String object;
-    private int src;
-    private int dst;
+    private Long src;
+    private Long dst;
 
-    public ActionItem(String object, int src, int dst) {
+    public ActionItem() {
+    }
+
+    public ActionItem(String object, Long src, Long dst) {
         this.object = object;
         this.src = src;
         this.dst = dst;
@@ -19,19 +22,19 @@ public class ActionItem {
         this.object = object;
     }
 
-    public int getSrc() {
+    public Long getSrc() {
         return src;
     }
 
-    public void setSrc(int src) {
+    public void setSrc(Long src) {
         this.src = src;
     }
 
-    public int getDst() {
+    public Long getDst() {
         return dst;
     }
 
-    public void setDst(int dst) {
+    public void setDst(Long dst) {
         this.dst = dst;
     }
 }

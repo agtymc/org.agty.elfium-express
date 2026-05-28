@@ -6,7 +6,7 @@
 <body>
   <div class="form-block">
     <div class="form-block-inner">
-      <form th:action="@{/login}" method="post" enctype="multipart/form-data">
+      <form th:action="@{/registration}" th:object="${user}" method="post" enctype="multipart/form-data">
           <h1 class="center" th:text="${title}"></h1>
 
           <!-- error message -->
@@ -14,28 +14,24 @@
               <div class="red">Не верный логин или пароль</div>
           </div>
 
-          <!-- logout message -->
-          <div th:if="${param.logout}">
-              <div class="blue">Вы вышли</div>
-          </div>
-
-          <div th:if="${param.registered}">
-              <div class="blue">Регистрация завершена. Теперь можно войти.</div>
+          <div th:if="${registrationError}">
+              <div class="red" th:text="${registrationError}"></div>
           </div>
 
           <div class="horizontal-field">
-            <label for="username">Логин</label>
-            <input type="text" name="username" id="username" value="" required />
+            <label for="email">E-mail (используется в качестве логина)</label>
+            <input type="text" name="email" id="email" th:value="${user.email}" required />
+            <div class="red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
           </div>
 
           <div class="horizontal-field">
             <label for="pass">Пароль</label>
             <input type="password" name="password" id="pass" value="" required />
+            <div class="red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
           </div>
 
           <div class="center horizontal-field">
-                <a href="/registration" class="submit">Регистрация</a>
-                <input type="submit" value="Войти" class="login-button" />
+            <input type="submit" value="Зарегистрироваться" class="registration-button" />
           </div>
       </form>
     </div>
