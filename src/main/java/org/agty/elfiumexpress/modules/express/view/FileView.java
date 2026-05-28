@@ -1,18 +1,17 @@
 package org.agty.elfiumexpress.modules.express.view;
 
-import org.agty.elfiumexpress.modules.express.entity.ExpressPanel;
+import org.agty.elfiumexpress.modules.express.dto.ExpressPanelDto;
 import org.agty.elfiumexpress.modules.express.view.files.*;
 import org.agty.elfiumexpress.storage.entity.UploadedFile;
 import org.agty.elfiumexpress.storage.types.FileTypes;
 import org.agty.elfiumexpress.storage.utils.ContentUtils;
-import org.agty.elfiumexpress.storage.utils.codehighlight.CodeHighlight;
 
 import java.util.List;
 
 public class FileView {
-    public final ExpressPanel expressPanel;
+    public final ExpressPanelDto expressPanel;
 
-    public FileView(ExpressPanel expressPanel) {
+    public FileView(ExpressPanelDto expressPanel) {
         this.expressPanel = expressPanel;
     }
 

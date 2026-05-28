@@ -12,6 +12,7 @@ import java.util.List;
 
 public class ExpressPanel {
     private Long idExpress;
+    private Long idUser;
     private Long idGroup;
     private LocalDateTime date;
     private String about;
@@ -32,6 +33,7 @@ public class ExpressPanel {
         ExpressPanel expressPanel = new ExpressPanel();
 
         expressPanel.setIdExpress(row.getLong("id_express"));
+        expressPanel.setIdUser(row.getLong("id_user"));
         expressPanel.setDate(row.getLocalDateTime("date"));
         expressPanel.setTitle(row.getString("title"));
         expressPanel.setAbout(row.getString("about"));
@@ -95,6 +97,14 @@ public class ExpressPanel {
 
     public void setIdGroup(Long idGroup) {
         this.idGroup = idGroup;
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
     public String getGroupTitle() {
@@ -186,6 +196,7 @@ public class ExpressPanel {
     public String toString() {
         return "ExpressPanel{" +
                 "idExpress=" + idExpress +
+                ", idUser=" + idUser +
                 ", idGroup=" + idGroup +
                 ", idType=" + idType +
                 ", date=" + date +

@@ -12,12 +12,14 @@ Use the Maven wrapper so the project builds consistently:
 - `./mvnw -DskipTests compile` is useful for quick compile checks.
 
 The project depends on a PostgreSQL setup defined in `config/config.ini` and custom AGTY artifacts declared in `pom.xml`.
+Flyway SQL migrations live in `src/main/resources/db/migration`: `V1` is reserved for baseline, `V2` is the initial schema, and all new database changes should be added as new files starting from `V3__*.sql`.
 
 ## Coding Style & Naming Conventions
 Follow the existing style: 4-space indentation, no tabs, and standard Spring constructor injection for controllers and services. Keep package names lowercase (`org.agty.elfiumexpress.*`), classes in `PascalCase`, methods and fields in `camelCase`, and constants in `UPPER_CASE`. Match existing MVC naming, for example `ExpressPanelController`, `ExpressPanelService`, and `ExpressPanelRepo`. No formatter or linter is configured in the repo, so keep changes consistent with surrounding code.
 
 ## Testing Guidelines
 Tests use Spring Boot Test with JUnit 5. Add tests under `src/test/java` mirroring the production package structure. Name test classes `*Tests` and prefer focused method names such as `contextLoads()` or `saveExpressPanel_persistsFiles()`. Add controller, service, or repository coverage for new behavior; do not rely only on the existing smoke test.
+If a change touches the schema, add or update Flyway coverage so a clean schema still migrates successfully.
 
 ## Commit & Pull Request Guidelines
 Recent history uses short, imperative commit messages such as `Change number of versions` and `First release`. Keep commits small and descriptive, ideally one logical change per commit. For pull requests, include a brief summary, note any config or database impact, link related issues, and attach screenshots when changing Thymeleaf views or static UI assets.

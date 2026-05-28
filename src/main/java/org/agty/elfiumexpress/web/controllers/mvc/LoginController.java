@@ -1,6 +1,6 @@
 package org.agty.elfiumexpress.web.controllers.mvc;
 
-import org.agty.elfiumexpress.modules.security.service.UserDetailsCustom;
+import org.agty.elfiumexpress.security.service.UserDetailsCustom;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

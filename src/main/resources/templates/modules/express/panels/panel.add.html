@@ -13,7 +13,7 @@
 <body>
     <div class="form-block">
         <div class="form-block-inner">
-            <form method="post" th:object="${expressPanel}" enctype="multipart/form-data">
+            <form method="post" th:object="${expressPanelDto}" enctype="multipart/form-data">
                 <h1 class="center" th:text="${title}"></h1>
                 <div class="table tableVertical">
                     <div class="tableTR">
@@ -56,7 +56,7 @@
                     </div>
 
 
-                    <div data-id="express-add-type-element" data-id-type="1" th:class="${expressPanel.idType != null && expressPanel.idType != 1} ? 'tableTR nodisplay' : 'tableTR'">
+                    <div data-id="express-add-type-element" data-id-type="1" th:class="${expressPanelDto.idType != null && expressPanelDto.idType != 1} ? 'tableTR nodisplay' : 'tableTR'">
                         <div class="tableTD0 tableTDwidth150 form-title">Ссылка</div>
                         <div class="tableTD0">
                             <input type="text" th:field="*{uri}" />
@@ -66,7 +66,7 @@
                         </div>
                     </div>
 
-                    <div data-id="express-add-type-element" data-id-type="2" th:class="${expressPanel.idType != 2} ? 'tableTR nodisplay' : 'tableTR'">
+                    <div data-id="express-add-type-element" data-id-type="2" th:class="${expressPanelDto.idType != 2} ? 'tableTR nodisplay' : 'tableTR'">
                         <div class="tableTD0 tableTDwidth150 form-title">Содержание</div>
                         <div class="tableTD0">
                             <textarea th:field="*{body}" class="textarea"></textarea>
@@ -76,19 +76,19 @@
                         </div>
                     </div>
 
-                    <div th:if="${expressPanel.getFiles()} != null AND ${expressPanel.getFiles().isEmpty()} != true" th:class="${expressPanel.idType != 3} ? 'tableTR nodisplay' : 'tableTR'">
+                    <div th:if="${expressPanelDto.getFiles()} != null AND ${expressPanelDto.getFiles().isEmpty()} != true" th:class="${expressPanelDto.idType != 3} ? 'tableTR nodisplay' : 'tableTR'">
                         <div class="tableTD0 tableTDwidth150 form-title">Прикрепленные файлы</div>
                         <div class="tableTD0">
-                            <div th:each="file : ${expressPanel.getFiles()}" class="inline-block">
+                            <div th:each="file : ${expressPanelDto.getFiles()}" class="inline-block">
                                 <a th:href="@{'/content/files/' + ${file.getFile()}}" th:text="${file.getName()}" target="_blank" class="uploaded-file"></a>
                             </div>
                         </div>
                     </div>
 
-                    <div data-id="express-add-type-element" data-id-type="3" th:class="${expressPanel.idType != 3} ? 'tableTR nodisplay' : 'tableTR'">
+                    <div data-id="express-add-type-element" data-id-type="3" th:class="${expressPanelDto.idType != 3} ? 'tableTR nodisplay' : 'tableTR'">
                         <div class="tableTD0 tableTDwidth150 form-title">Прикрепить файл</div>
                         <div class="tableTD0">
-                            <input type="file" name="attachments[]" />
+                            <input type="file" th:field="*{attachments}" />
                         </div>
                     </div>
 

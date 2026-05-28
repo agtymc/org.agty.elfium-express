@@ -38,7 +38,7 @@ public class FileUploadRepository {
     public Long save(UploadedFile uploadedFile) {
         if (uploadedFile == null || !uploadedFile.hasFile()) return null;
 
-        Arguments arguments = new Arguments().setTable("{files}")
+        Arguments arguments = Arguments.builder().setTable("{files}")
                 .setData("name", uploadedFile.getName())
                 .setData("file", uploadedFile.getFile())
                 .setData("content_type", uploadedFile.getContentType())
@@ -47,7 +47,7 @@ public class FileUploadRepository {
                 .setReturnLastInsertId(true);
 
         if (uploadedFile.idExists()) {
-            arguments.setWhere("id_file = " + uploadedFile.getIdFile());
+            arguments.setWhere("id_file = %d", uploadedFile.getIdFile());
             try (AgtySQLPool.PooledAgtySQL sql = ConnectionPool.POOL.borrow()) {
                 sql.sql().update(arguments);
                 return uploadedFile.getIdFile();
@@ -67,9 +67,9 @@ public class FileUploadRepository {
         SqlRow row;
         try (AgtySQLPool.PooledAgtySQL sql = ConnectionPool.POOL.borrow()) {
             row = sql.sql().fetch(
-                    new Arguments()
+                    Arguments.builder()
                             .setTable("{files}")
-                            .setWhere("file = '" + AgtyUtils.hencode(filename) + "'")
+                            .setWhere("file = '%s'", AgtyUtils.hencode(filename))
             );
         } catch (SQLException e) {
             throw new RuntimeException(e);

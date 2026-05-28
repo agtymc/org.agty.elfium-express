@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.agty.agtysql.interfaces.SqlRow;
 
 public class ExpressGroup {
+    private Long idUser;
     private Long idGroup;
     private Long rGroup;
 
@@ -13,11 +14,20 @@ public class ExpressGroup {
 
     public static ExpressGroup rowToEntity(SqlRow row) {
         ExpressGroup expressGroup = new ExpressGroup();
+        expressGroup.setIdUser(row.getLong("id_user"));
         expressGroup.setIdGroup(row.getLong("id_group"));
         expressGroup.setRGroup(row.getLong("r_group"));
         expressGroup.setTitle(row.getString("title"));
         expressGroup.setComment(row.getString("comment"));
         return expressGroup;
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
     public Long getIdGroup() {
@@ -59,6 +69,8 @@ public class ExpressGroup {
     @Override
     public String toString() {
         return "Group{" +
+                "id_user=" + idUser +
+                ", " +
                 "id_group=" + idGroup +
                 ", r_group=" + rGroup +
                 ", title='" + title + '\'' +

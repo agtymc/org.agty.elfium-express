@@ -1,9 +1,8 @@
 package org.agty.elfiumexpress.modules.express.common;
 
-import org.agty.elfiumexpress.modules.express.entity.ExpressPanel;
+import org.agty.elfiumexpress.modules.express.dto.ExpressPanelDto;
 import org.agty.elfiumexpress.modules.express.view.FileView;
 import org.agty.elfiumexpress.storage.utils.ContentUtils;
-import org.agty.utils.AgtyUtils;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +17,7 @@ public class ExpressView {
     private String status;
     private String icon;
 
-    public static ExpressView convertFromPanel(ExpressPanel expressPanel) {
+    public static ExpressView convertFromPanel(ExpressPanelDto expressPanel) {
         ExpressView expressView = new ExpressView();
 
         expressView.setIdPanel(expressPanel.getIdExpress());
@@ -30,7 +29,7 @@ public class ExpressView {
         return expressView;
     }
 
-    public String bodyConvert(ExpressPanel panel) {
+    public String bodyConvert(ExpressPanelDto panel) {
         if (panel.getIdType() == 2) {
             return ContentUtils.nl2br(panel.getBody());
         }

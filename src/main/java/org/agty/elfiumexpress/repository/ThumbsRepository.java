@@ -19,7 +19,7 @@ import java.util.List;
 public class ThumbsRepository {
     public void save(Thumb thumb) {
         if (!thumbIsExist(thumb.getThumb())) {
-            Arguments arguments = new Arguments().setTable("{thumbs}").setData("file", thumb.getFile()).setData("thumb", thumb.getThumb());
+            Arguments arguments = Arguments.builder().setTable("{thumbs}").setData("file", thumb.getFile()).setData("thumb", thumb.getThumb());
             try (AgtySQLPool.PooledAgtySQL sql = ConnectionPool.POOL.borrow()) {
                 sql.sql().insert(arguments);
             } catch (SQLException e) {
@@ -31,7 +31,7 @@ public class ThumbsRepository {
     public List<Thumb> getThumbListByFile(String file) {
         List<Thumb> thumbs = new ArrayList<>();
 
-        Arguments arguments = new Arguments().setTable("{thumbs}").setWhere("file = '" + AgtyUtils.hencode(file) + "'");
+        Arguments arguments = Arguments.builder().setTable("{thumbs}").setWhere("file = '%s'", AgtyUtils.hencode(file));
         List<SqlRow> rows;
         try (AgtySQLPool.PooledAgtySQL sql = ConnectionPool.POOL.borrow()) {
             rows = sql.sql().findAll(arguments);
@@ -46,7 +46,7 @@ public class ThumbsRepository {
     }
 
     public Thumb getThumb(String thumbName) {
-        Arguments arguments = new Arguments().setTable("{thumbs}").setWhere("thumb = '" + AgtyUtils.hencode(thumbName) + "'");
+        Arguments arguments = Arguments.builder().setTable("{thumbs}").setWhere("thumb = '%s'", AgtyUtils.hencode(thumbName));
         try (AgtySQLPool.PooledAgtySQL sql = ConnectionPool.POOL.borrow()) {
             return Thumb.rowToThumb(sql.sql().fetch(arguments));
         } catch (SQLException e) {
@@ -61,7 +61,7 @@ public class ThumbsRepository {
 
     public void deleteThumb(Long id) {
         try (AgtySQLPool.PooledAgtySQL sql = ConnectionPool.POOL.borrow()) {
-            sql.sql().delete(new Arguments().setTable("{thumbs}").setWhere("id_thumbs = " + id));
+            sql.sql().delete(Arguments.builder().setTable("{thumbs}").setWhere("id_thumbs = %d", id));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

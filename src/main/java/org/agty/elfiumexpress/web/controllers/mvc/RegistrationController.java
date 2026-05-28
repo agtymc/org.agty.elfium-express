@@ -1,8 +1,8 @@
 package org.agty.elfiumexpress.web.controllers.mvc;
 
 import jakarta.validation.Valid;
-import org.agty.elfiumexpress.modules.security.dto.UserRegistrationDto;
-import org.agty.elfiumexpress.modules.security.service.UserServiceInterface;
+import org.agty.elfiumexpress.security.dto.UserRegistrationDto;
+import org.agty.elfiumexpress.security.service.UserServiceInterface;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +20,7 @@ public class RegistrationController {
         this.userServiceInterface = userServiceInterface;
     }
 
-    @ModelAttribute("user")
+    @ModelAttribute("userRegistrationDto")
     public UserRegistrationDto userRegistrationDto() {
         return new UserRegistrationDto();
     }
@@ -32,7 +32,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String registration(@Valid @ModelAttribute("user") UserRegistrationDto userRegistrationDto,
+    public String registration(@Valid @ModelAttribute("userRegistrationDto") UserRegistrationDto userRegistrationDto,
                                BindingResult bindingResult,
                                Model model) {
         model.addAttribute("title", "Регистрация в Elfium Express");

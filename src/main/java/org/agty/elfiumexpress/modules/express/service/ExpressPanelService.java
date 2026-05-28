@@ -1,10 +1,10 @@
 package org.agty.elfiumexpress.modules.express.service;
 
 import org.agty.elfiumexpress.api.entity.SortBody;
-import org.agty.elfiumexpress.modules.express.entity.ExpressPanel;
-import org.agty.elfiumexpress.repository.ExpressPanelRepository;
+import org.agty.elfiumexpress.modules.express.dto.ExpressPanelDto;
 import org.agty.elfiumexpress.repository.FileUploadRepository;
 import org.agty.elfiumexpress.repository.ThumbsRepository;
+import org.agty.elfiumexpress.modules.express.repository.ExpressPanelRepository;
 import org.agty.elfiumexpress.storage.entity.UploadedFile;
 import org.springframework.stereotype.Service;
 
@@ -24,28 +24,28 @@ public class ExpressPanelService {
         this.fileUploadRepository = fileUploadRepository;
     }
 
-    public Long saveExpressPanel(ExpressPanel expressPanel) {
-        return expressPanelRepository.save(expressPanel);
+    public Long saveExpressPanel(ExpressPanelDto expressPanel, Long idUser) {
+        return expressPanelRepository.save(expressPanel, idUser);
     }
 
-    public ExpressPanel getExpressPanel(Long id) {
-        return expressPanelRepository.getById(id);
+    public ExpressPanelDto getExpressPanel(Long id, Long idUser) {
+        return expressPanelRepository.getById(id, idUser);
     }
 
-    public List<ExpressPanel> getExpressPanels(Long idGroup) {
-        return expressPanelRepository.findAll(idGroup);
+    public List<ExpressPanelDto> getExpressPanels(Long idGroup, Long idUser) {
+        return expressPanelRepository.findAll(idGroup, idUser);
     }
 
     public List<UploadedFile> getFiles(Long idPanel) {
         return expressPanelRepository.findUploadedFiles(idPanel);
     }
 
-    public void del(Long idPanel) {
-        removeFiles(idPanel); //Сначала файлы
-        expressPanelRepository.del(idPanel); //Потом панель
+    public void del(Long idPanel, Long idUser) {
+        removeFiles(idPanel, idUser); //Сначала файлы
+        expressPanelRepository.del(idPanel, idUser); //Потом панель
     }
 
-    public void removeFiles(Long idPanel) {
+    public void removeFiles(Long idPanel, Long idUser) {
         List<UploadedFile> uploadedFiles = getFiles(idPanel);
         for (UploadedFile uploadedFile : uploadedFiles) {
             thumbsRepository.deleteThumbByFile(uploadedFile.getFile());
@@ -53,7 +53,7 @@ public class ExpressPanelService {
         }
     }
 
-    public void sort(SortBody[] bodies) {
-        expressPanelRepository.sort(bodies);
+    public void sort(SortBody[] bodies, Long idUser) {
+        expressPanelRepository.sort(bodies, idUser);
     }
 }

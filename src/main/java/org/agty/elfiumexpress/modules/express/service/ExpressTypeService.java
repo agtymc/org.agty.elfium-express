@@ -1,7 +1,7 @@
 package org.agty.elfiumexpress.modules.express.service;
 
-import org.agty.elfiumexpress.modules.express.common.ExpressType;
-import org.agty.elfiumexpress.repository.ExpressTypeRepository;
+import org.agty.elfiumexpress.modules.express.dto.ExpressTypeDto;
+import org.agty.elfiumexpress.modules.express.repository.ExpressTypeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class ExpressTypeService {
         this.expressTypeRepository = expressTypeRepository;
     }
 
-    public List<ExpressType> findAll() {
+    public List<ExpressTypeDto> findAll() {
         return expressTypeRepository.findAll();
     }
 }
