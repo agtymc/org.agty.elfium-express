@@ -1,7 +1,12 @@
 function api(uri, method, data, action) {
+    const csrfToken = $('meta[name="_csrf"]').attr('content');
+    const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+
     $.ajaxSetup({
         beforeSend: function(xhr) {
-            //xhr.setRequestHeader('Authorization', $.cookie('_LOGIN[default]'));
+            if (csrfToken && csrfHeader && method !== 'GET') {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            }
         }
     });
 

@@ -82,8 +82,8 @@ public class FileView {
             content.append("<div class=\"express-files-gallery-item-image\">");
             content.append(     "<img src=\"/img/blank.png\" class=\"image-blank\" >");
             content.append("</div>");
-            content.append("<div class=\"express-files-gallery-item-title\" title=\"").append(file.getName()).append("\">");
-            content.append(     file.getName());
+            content.append("<div class=\"express-files-gallery-item-title\" title=\"").append(ContentUtils.escapeHtml(file.getName())).append("\">");
+            content.append(     ContentUtils.escapeHtml(file.getName()));
             content.append("</div>");
         }
 

@@ -8,9 +8,11 @@ import org.agty.elfiumexpress.storage.service.StorageService;
 import org.agty.elfiumexpress.storage.thumbs.Thumbs;
 import org.agty.elfiumexpress.storage.thumbs.ThumbsObserver;
 import org.agty.elfiumexpress.storage.types.ContentDisposition;
+import org.agty.elfiumexpress.security.service.UserDetailsCustom;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,9 +23,11 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 
 @Controller
 public class StorageController {
+    private static final Duration THUMB_WAIT_TIMEOUT = Duration.ofSeconds(30);
     private final StorageService storageService;
     private final FileUploadService fileUploadService;
     private final ThumbsRepository thumbsRepository;
@@ -41,10 +45,12 @@ public class StorageController {
      */
     @GetMapping("/content/files/{filename:.+}")
     @ResponseBody
-    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
+    public ResponseEntity<Resource> getFile(@PathVariable String filename,
+                                            @AuthenticationPrincipal UserDetailsCustom userDetails) {
+        long idUser = userDetails.getUser().getId();
 
         //Get a file from repository
-        UploadedFile file = fileUploadService.getFile(filename);
+        UploadedFile file = fileUploadService.getFile(filename, idUser);
 
         if (file == null)
             return ResponseEntity.notFound().build();
@@ -52,7 +58,7 @@ public class StorageController {
         /*
             TODO: здесь можно ввести ограничение, что видит только свои файлы
          */
-        Resource resource = storageService.loadAsResource("users/0/" + filename);
+        Resource resource = storageService.loadAsResource("users/" + idUser + "/" + filename);
 
         if (resource == null)
             return ResponseEntity.notFound().build();
@@ -75,50 +81,53 @@ public class StorageController {
      */
     @GetMapping("/thumb/{width}x{height}/{filename:.+}")
     @ResponseBody
-    public ResponseEntity<Resource> getThumb(@PathVariable int width, @PathVariable int height, @PathVariable final String filename) {
+    public ResponseEntity<Resource> getThumb(@PathVariable int width,
+                                             @PathVariable int height,
+                                             @PathVariable final String filename,
+                                             @AuthenticationPrincipal UserDetailsCustom userDetails) {
         if (height > 250) height = 250;
         if (width > 250) width = 250;
         if (height < 100) height = 100;
         if (width < 100) width = 100;
+        long idUser = userDetails.getUser().getId();
+        final int thumbWidth = width;
+        final int thumbHeight = height;
 
         //Get a file from repository
-        UploadedFile file = fileUploadService.getFile(filename);
+        UploadedFile file = fileUploadService.getFile(filename, idUser);
 
         if (file == null)
                return ResponseEntity.notFound().build();
 
-        String source = "content/files/users/0/" + filename;
-        String thumbName = file.getFile() + "-" + width + "x" + height + ".jpg";
-        String destination = "content/files/users/0/thumbs/" + thumbName;
-
-        //TODO: переделать в потоки и дожидаться завершения
-        while(ThumbsObserver.thumbInProgress(thumbName)) {}
+        String source = "content/files/users/" + idUser + "/" + filename;
+        String thumbName = file.getFile() + "-" + thumbWidth + "x" + thumbHeight + ".jpg";
+        String destination = "content/files/users/" + idUser + "/thumbs/" + thumbName;
 
         if (!Files.exists(Path.of(destination))) {
             try {
-                ThumbsObserver.registerCreator(thumbName);
+                ThumbsObserver.createOrWait(thumbName, THUMB_WAIT_TIMEOUT, () -> {
+                    if (Files.exists(Path.of(destination))) {
+                        return;
+                    }
 
-                Thumbs thumbCreator = new Thumbs();
-                thumbCreator.setSource(source);
-                thumbCreator.setDestination(destination);
-                thumbCreator.setWidth(width);
-                thumbCreator.setHeight(height);
-                thumbCreator.setQuality(.75f);
-                thumbCreator.setMimeType(file.getContentType());
-                thumbCreator.save();
+                    Thumbs thumbCreator = new Thumbs();
+                    thumbCreator.setSource(source);
+                    thumbCreator.setDestination(destination);
+                    thumbCreator.setWidth(thumbWidth);
+                    thumbCreator.setHeight(thumbHeight);
+                    thumbCreator.setQuality(.75f);
+                    thumbCreator.setMimeType(file.getContentType());
+                    thumbCreator.save();
 
-                if (Files.exists(Path.of(destination))) {
-                    Thumb thumb = new Thumb();
-                    thumb.setThumb(thumbName);
-                    thumb.setFile(filename);
-
-                    thumbsRepository.save(thumb);
-                }
-
-                ThumbsObserver.unregisterCreator(thumbName);
+                    if (Files.exists(Path.of(destination))) {
+                        Thumb thumb = new Thumb();
+                        thumb.setThumb(thumbName);
+                        thumb.setFile(filename);
+                        thumbsRepository.save(thumb);
+                    }
+                });
 
             } catch (IOException e) {
-                //throw new RuntimeException(e);
                 return ResponseEntity.notFound().build();
             }
         }
@@ -126,7 +135,7 @@ public class StorageController {
         /*
             TODO: здесь можно ввести ограничение, что видит только свои файлы
          */
-        Resource resource = storageService.loadAsResource("users/0/thumbs/" + thumbName);
+        Resource resource = storageService.loadAsResource("users/" + idUser + "/thumbs/" + thumbName);
 
         if (resource == null)
             return ResponseEntity.notFound().build();

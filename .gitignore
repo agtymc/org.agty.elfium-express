@@ -41,3 +41,4 @@ bin
 .fuse_*
 /config/*
 !/config/config.ini-sample
+content

@@ -2,6 +2,7 @@ package org.agty.elfiumexpress.modules.express.view.files;
 
 import org.agty.elfiumexpress.modules.express.view.Files;
 import org.agty.elfiumexpress.storage.entity.UploadedFile;
+import org.agty.elfiumexpress.storage.utils.ContentUtils;
 import org.agty.utils.AgtyUtils;
 
 public class File implements Files {
@@ -33,10 +34,10 @@ public class File implements Files {
         StringBuilder content = new StringBuilder();
 
         content.append("<div class=\"express-file-info\">");
-        content.append(     "<div class=\"express-file-info-item express-file-info-item-title\"><span>Имя:</span> ").append(file.getName()).append("</div>");
-        content.append(     "<div class=\"express-file-info-item\"><span>Размер:</span> ").append(AgtyUtils.filesizeToTitle(file.getSize(), "en")).append("</div>");
-        content.append(     "<div class=\"express-file-info-item\"><span>Content-Type:</span> ").append(file.getContentType()).append("</div>");
-        content.append(     "<div class=\"express-file-info-item\"><span>Extension:</span> ").append(file.getExtension()).append("</div>");
+        content.append(     "<div class=\"express-file-info-item express-file-info-item-title\"><span>Имя:</span> ").append(ContentUtils.escapeHtml(file.getName())).append("</div>");
+        content.append(     "<div class=\"express-file-info-item\"><span>Размер:</span> ").append(ContentUtils.escapeHtml(AgtyUtils.filesizeToTitle(file.getSize(), "en"))).append("</div>");
+        content.append(     "<div class=\"express-file-info-item\"><span>Content-Type:</span> ").append(ContentUtils.escapeHtml(file.getContentType())).append("</div>");
+        content.append(     "<div class=\"express-file-info-item\"><span>Extension:</span> ").append(ContentUtils.escapeHtml(file.getExtension())).append("</div>");
         content.append("</div>");
 
         content.append("<div class=\"express-file-download\">");

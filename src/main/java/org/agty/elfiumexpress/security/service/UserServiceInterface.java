@@ -14,5 +14,6 @@ import java.util.List;
 public interface UserServiceInterface extends UserDetailsService {
     User save(UserRegistrationDto registrationDto);
     List<UserDto> getAll();
+    UserDto getById(Long id);
     UserDetails loadUserByUsername(String username);
 }

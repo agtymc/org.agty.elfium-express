@@ -61,4 +61,9 @@ public class UserService implements UserServiceInterface {
     public List<UserDto> getAll() {
         return userRepository.findAll();
     }
+
+    @Override
+    public UserDto getById(Long id) {
+        return userRepository.findDtoById(id);
+    }
 }

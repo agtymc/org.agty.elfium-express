@@ -43,6 +43,9 @@ class FlywayMigrationTests {
             assertTrue(tableExists(connection, schema, "spring_files"));
             assertTrue(tableExists(connection, schema, "spring_express_files"));
             assertTrue(tableExists(connection, schema, "spring_thumbs"));
+            assertTrue(tableExists(connection, schema, "spring_users_session"));
+            assertTrue(tableExists(connection, schema, "spring_users_session_attributes"));
+            assertTrue(columnExists(connection, schema, "spring_files", "id_user"));
 
             assertEquals(3, countRows(connection, schema, "spring_express_type"));
             assertEquals(1, countRows(connection, schema, "spring_users"));
@@ -115,6 +118,17 @@ class FlywayMigrationTests {
              ResultSet rs = statement.executeQuery("SELECT COUNT(*) FROM %s.%s".formatted(schema, table))) {
             rs.next();
             return rs.getInt(1);
+        }
+    }
+
+    private boolean columnExists(Connection connection, String schema, String table, String column) throws SQLException {
+        try (Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(
+                     "SELECT 1 FROM information_schema.columns " +
+                             "WHERE table_schema = '%s' AND table_name = '%s' AND column_name = '%s'"
+                                     .formatted(schema, table, column)
+             )) {
+            return rs.next();
         }
     }
 }

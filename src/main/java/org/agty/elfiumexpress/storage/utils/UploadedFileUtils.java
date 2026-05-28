@@ -20,6 +20,7 @@ public class UploadedFileUtils {
         UploadedFile uploadedFile = new UploadedFile();
 
         uploadedFile.setIdFile(sqlRow.getLong("id_file"));
+        uploadedFile.setIdUser(sqlRow.getLong("id_user"));
         uploadedFile.setName(sqlRow.getString("name"));
         uploadedFile.setFile(sqlRow.getString("file"));
         uploadedFile.setContentType(sqlRow.getString("content_type"));

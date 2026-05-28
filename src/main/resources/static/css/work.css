@@ -283,3 +283,82 @@ a.button:hover {
     color: #ffc400;
     background-color: #000;
 }
+
+.profile-block {
+    max-width: 900px;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+.profile-header {
+    margin-bottom: 25px;
+}
+
+.profile-actions {
+    margin-top: 20px;
+}
+
+.profile-actions .submit,
+.profile-actions .logout-button {
+    margin: 0 5px;
+}
+
+.profile-table {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.profile-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 12px;
+    align-items: center;
+}
+
+.profile-label {
+    color: #9dcfff;
+    font-size: 18px;
+}
+
+.profile-value {
+    background-color: rgba(255, 255, 255, 0.92);
+    color: #000;
+    border-radius: 5px;
+    padding: 14px 18px;
+    font-size: 18px;
+}
+
+.inline-logout-form {
+    display: inline-block;
+    margin: 0;
+}
+
+button.logout-button {
+    width: auto;
+    min-width: 58px;
+    padding: 15px 18px;
+    border: 1px #ccc solid;
+    border-radius: 0;
+    font-size: 24px;
+    background-color: #e4e4e4;
+    color: #8a2002;
+    cursor: pointer;
+}
+
+button.logout-button:hover {
+    border: 1px #900 solid;
+    background-color: #fff;
+    color: #c40000;
+}
+
+@media (max-width: 860px) {
+    .profile-block {
+        padding: 20px;
+    }
+
+    .profile-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+}

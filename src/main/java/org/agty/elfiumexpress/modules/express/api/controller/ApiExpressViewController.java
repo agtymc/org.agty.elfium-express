@@ -17,10 +17,10 @@ public class ApiExpressViewController {
         this.expressPanelService = expressPanelService;
     }
 
-    @PostMapping
-    public ResponseEntity<ExpressView> view(@RequestBody ExpressView expressView,
+    @GetMapping("/{idPanel}")
+    public ResponseEntity<ExpressView> view(@PathVariable long idPanel,
                                             @AuthenticationPrincipal UserDetailsCustom userDetails) {
-        ExpressPanelDto panel = expressPanelService.getExpressPanel(expressView.getIdPanel(), userDetails.getUser().getId());
+        ExpressPanelDto panel = expressPanelService.getExpressPanel(idPanel, userDetails.getUser().getId());
         ExpressView view = ExpressView.convertFromPanel(panel);
         return ResponseEntity.ok(view);
     }

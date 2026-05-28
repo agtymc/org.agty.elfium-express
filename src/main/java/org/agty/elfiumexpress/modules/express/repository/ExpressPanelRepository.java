@@ -71,7 +71,7 @@ public class ExpressPanelRepository {
 
     public List<UploadedFile> findUploadedFiles(Long idPanel) {
         Arguments arguments = Arguments.builder().setQuery(
-                ("SELECT files.id_file, files.name, files.file, files.content_type, files.size, files.ext " +
+                ("SELECT files.id_file, files.id_user, files.name, files.file, files.content_type, files.size, files.ext " +
                         "FROM {express_files} as expfiles " +
                         "LEFT JOIN {files} as files ON (files.id_file = expfiles.id_file) " +
                         "WHERE expfiles.id_express = %d ORDER BY files.id_file ASC").formatted(idPanel)
@@ -125,7 +125,7 @@ public class ExpressPanelRepository {
             }
 
             if (idPanel != null) {
-                saveFiles(entity.getFiles(), idPanel, sql.sql());
+                saveFiles(entity.getFiles(), idPanel, idUser, sql.sql());
             }
 
             return idPanel;
@@ -134,12 +134,12 @@ public class ExpressPanelRepository {
         }
     }
 
-    private void saveFiles(List<UploadedFile> files, Long idPanel, AgtySQL sql) {
+    private void saveFiles(List<UploadedFile> files, Long idPanel, Long idUser, AgtySQL sql) {
         if (files == null || files.isEmpty()) {
             return;
         }
         for (UploadedFile file : files) {
-            Long idFile = file.idExists() ? file.getIdFile() : fileUploadRepository.save(file);
+            Long idFile = file.idExists() ? file.getIdFile() : fileUploadRepository.save(file, idUser);
             if (idFile != null) {
                 refToFile(idPanel, idFile, sql);
             }

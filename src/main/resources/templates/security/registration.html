@@ -7,6 +7,7 @@
   <div class="form-block">
     <div class="form-block-inner">
       <form th:action="@{/registration}" th:object="${userRegistrationDto}" method="post" enctype="multipart/form-data">
+          <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
           <h1 class="center" th:text="${title}"></h1>
 
           <!-- error message -->

@@ -67,7 +67,7 @@ public class ThumbsRepository {
         }
     }
 
-    public void deleteThumbByFile(String file) {
+    public void deleteThumbByFile(String file, long idUser) {
         List<Thumb> thumbs = getThumbListByFile(file);
 
         if (!thumbs.isEmpty()) {
@@ -76,7 +76,7 @@ public class ThumbsRepository {
                 deleteThumb(thumb.getId());
 
                 try {
-                    Files.deleteIfExists(Path.of("content/files/users/0/thumbs/" + thumb.getThumb()));
+                    Files.deleteIfExists(Path.of("content/files/users/" + idUser + "/thumbs/" + thumb.getThumb()));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

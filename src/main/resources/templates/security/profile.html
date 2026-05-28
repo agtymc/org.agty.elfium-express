@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <th:block th:replace="~{index/head.html::indexHead}"></th:block>
+</head>
+<body>
+  <div class="form-block">
+    <div class="form-block-inner profile-block">
+      <div class="profile-header">
+        <h1 class="center" th:text="${title}"></h1>
+        <div class="profile-actions center">
+          <a href="/express" class="submit">Экспресс панель</a>
+          <form th:action="@{/logout}" method="post" class="inline-logout-form">
+            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <button type="submit" class="submit logout-button" title="Выйти">&#x23FB;</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="profile-table">
+        <div class="profile-row">
+          <div class="profile-label">Имя</div>
+          <div class="profile-value" th:text="${userDto.firstName} ?: '-'"></div>
+        </div>
+        <div class="profile-row">
+          <div class="profile-label">Фамилия</div>
+          <div class="profile-value" th:text="${userDto.lastName} ?: '-'"></div>
+        </div>
+        <div class="profile-row">
+          <div class="profile-label">Отчество</div>
+          <div class="profile-value" th:text="${userDto.thirdName} ?: '-'"></div>
+        </div>
+        <div class="profile-row">
+          <div class="profile-label">Логин</div>
+          <div class="profile-value" th:text="${userDto.login} ?: '-'"></div>
+        </div>
+        <div class="profile-row">
+          <div class="profile-label">E-mail</div>
+          <div class="profile-value" th:text="${userDto.email} ?: '-'"></div>
+        </div>
+        <div class="profile-row">
+          <div class="profile-label">Роли</div>
+          <div class="profile-value" th:text="${#strings.listJoin(userDto.roles.![name], ', ')}"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

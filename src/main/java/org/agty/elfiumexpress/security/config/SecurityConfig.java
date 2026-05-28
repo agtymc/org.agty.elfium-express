@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -49,15 +48,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authenticationProvider(authenticationProvider())
-                .httpBasic(
-                        AbstractHttpConfigurer::disable
-                )
-                .formLogin(
-                        form -> form.loginPage("/login").permitAll()
-                )
-                .csrf(
-                        AbstractHttpConfigurer::disable
-                )
+                .httpBasic(httpBasic -> httpBasic.disable())
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers("/login", "/registration**", "/js/**", "/css/**", "/img/**").permitAll()
@@ -65,15 +56,19 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 .anyRequest().authenticated()
 
                 ).formLogin(form -> form
+                        .loginPage("/login")
                         .defaultSuccessUrl("/", true)
                         .permitAll()
+                )
+                .headers(headers -> headers
+                        .frameOptions(frameOptions -> frameOptions.sameOrigin())
                 )
                 .logout(
                         logout -> logout
                                 .logoutUrl("/logout")
                                 .invalidateHttpSession(true)
                                 .clearAuthentication(true)
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))
                                 .logoutSuccessUrl("/login?logout")
                 )
                 .build();

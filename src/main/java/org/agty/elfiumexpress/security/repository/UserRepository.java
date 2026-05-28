@@ -25,7 +25,7 @@ public class UserRepository {
             row = sql.sql().fetch(
                     Arguments.builder()
                             .setTable("{users}")
-                            .setWhere("[email] = '%s'", email)
+                            .setWhere("[email] = '%s'", AgtyUtils.hencode(email))
             );
 
             if (sql.sql().hasErrors()) {
@@ -88,6 +88,27 @@ public class UserRepository {
             return user;
         }
         return null;
+    }
+
+    public UserDto findDtoById(Long id) {
+        if (id == null || id < 1) return null;
+
+        SqlRow row;
+        try (AgtySQLPool.PooledAgtySQL sql = ConnectionPool.POOL.borrow()) {
+            row = sql.sql().fetch(
+                    Arguments.builder()
+                            .setTable("{users}")
+                            .setWhere("[id_user] = %d", id)
+            );
+
+            if (sql.sql().hasErrors()) {
+                System.err.println(sql.sql().getErrors());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return row.noEmpty() ? UserConverter.rowToDto(row) : null;
     }
 
     public User save(User user) {

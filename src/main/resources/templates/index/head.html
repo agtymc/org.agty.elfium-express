@@ -1,6 +1,8 @@
 <th:block th:fragment="indexHead">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=800px">
+    <meta name="_csrf" th:if="${_csrf != null}" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:if="${_csrf != null}" th:content="${_csrf.headerName}">
     <title th:text="@{'Elfium Express :: ' +  ${title}}"></title>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
 
@@ -18,7 +20,7 @@
     <link rel="stylesheet" href="/css/agty-full-view.css" data-precedence="next"/>
     <script src="/js/agty-full-view.js"></script>
 
-    <script src="/js/api.js"></script>
+    <script src="/js/api.js?v=2"></script>
 
     <script>
         $(document).ready(function() {

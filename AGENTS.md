@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-This is a Maven-based Spring Boot application targeting Java 21. Backend code lives in `src/main/java/org/agty/elfiumexpress`, split by feature areas such as `modules/express`, `modules/security`, `storage`, `api`, and `utils`. Thymeleaf templates are in `src/main/resources/templates`, static frontend assets are in `src/main/resources/static`, and app configuration starts in `src/main/resources/application.properties`. Local database settings are kept in `config/config.ini`. Tests live under `src/test/java`.
+This is a Maven-based Spring Boot application targeting Java 21. Backend code lives in `src/main/java/org/agty/elfiumexpress`, split by feature areas such as `modules/express`, `modules/security`, `storage`, `api`, and `utils`. Thymeleaf templates are in `src/main/resources/templates`, static frontend assets are in `src/main/resources/static`, and app configuration starts in `src/main/resources/application.properties`. Real local settings live in `config/config.ini`; `config/config.ini-sample` is only the committed template. Tests live under `src/test/java`.
 
 ## Build, Test, and Development Commands
 Use the Maven wrapper so the project builds consistently:
@@ -23,6 +23,7 @@ If a change touches the schema, add or update Flyway coverage so a clean schema 
 
 ## Commit & Pull Request Guidelines
 Recent history uses short, imperative commit messages such as `Change number of versions` and `First release`. Keep commits small and descriptive, ideally one logical change per commit. For pull requests, include a brief summary, note any config or database impact, link related issues, and attach screenshots when changing Thymeleaf views or static UI assets.
+When you create a new file for the project, add it to Git immediately instead of leaving it untracked.
 
 ## Security & Configuration Tips
-Do not commit real credentials or user content. Treat `config/config.ini` and `content/` as environment-specific data, and keep secrets out of versioned defaults.
+Do not commit real credentials or user content. Keep working values in `config/config.ini` first, and update `config/config.ini-sample` only as a sanitized template for Git. Treat `content/` as environment-specific data as well.

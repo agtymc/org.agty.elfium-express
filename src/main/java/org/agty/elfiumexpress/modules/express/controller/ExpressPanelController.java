@@ -7,6 +7,7 @@ import org.agty.elfiumexpress.modules.express.service.ExpressGroupService;
 import org.agty.elfiumexpress.modules.express.service.ExpressPanelService;
 import org.agty.elfiumexpress.modules.express.service.ExpressTypeService;
 import org.agty.elfiumexpress.security.service.UserDetailsCustom;
+import org.agty.elfiumexpress.security.service.UserServiceInterface;
 import org.agty.elfiumexpress.storage.service.FileUploadService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.agty.elfiumexpress.utils.ParsePage;
@@ -25,15 +26,18 @@ public class ExpressPanelController {
     private final ExpressGroupService expressGroupService;
     private final ExpressTypeService expressTypeService;
     private final FileUploadService fileUploadService;
+    private final UserServiceInterface userServiceInterface;
 
     public ExpressPanelController(ExpressPanelService expressPanelService,
                                   ExpressGroupService expressGroupService,
                                   ExpressTypeService expressTypeService,
-                                  FileUploadService fileUploadService) {
+                                  FileUploadService fileUploadService,
+                                  UserServiceInterface userServiceInterface) {
         this.expressPanelService = expressPanelService;
         this.expressGroupService = expressGroupService;
         this.expressTypeService = expressTypeService;
         this.fileUploadService = fileUploadService;
+        this.userServiceInterface = userServiceInterface;
     }
 
     @ModelAttribute(name = "expressPanelDto")
@@ -56,6 +60,7 @@ public class ExpressPanelController {
             return "redirect:/express";
         }
         model.addAttribute("title", expressGroup.getTitle());
+        model.addAttribute("currentUser", userServiceInterface.getById(idUser));
         model.addAttribute("nowGroup", expressGroup);
         model.addAttribute("isIndex", idGroup == 1);
         model.addAttribute("noExpress", idGroup == 1);
@@ -101,7 +106,7 @@ public class ExpressPanelController {
             return addForm("Add An Express Panel Item", expressPanel, expressGroupService.getGroup(idGroup, idUser), model);
         }
 
-        expressPanelService.saveExpressPanel(createDto(null, idGroup, expressPanel), idUser);
+        expressPanelService.saveExpressPanel(createDto(null, idGroup, expressPanel, idUser), idUser);
 
         return "redirect:/express/" + idGroup;
     }
@@ -128,7 +133,7 @@ public class ExpressPanelController {
             return addForm("Edit The Express Panel Item", expressPanel, expressGroupService.getGroup(panel.getIdGroup(), idUser), model);
         }
 
-        expressPanelService.saveExpressPanel(createDto(idPanel, panel.getIdGroup(), expressPanel), idUser);
+        expressPanelService.saveExpressPanel(createDto(idPanel, panel.getIdGroup(), expressPanel, idUser), idUser);
 
         return "redirect:/express/" + panel.getIdGroup();
     }
@@ -164,7 +169,7 @@ public class ExpressPanelController {
      * @param expressPanel Source Express Panel
      * @return ExpressPanel
      */
-    private ExpressPanelDto createDto(Long idPanel, Long idGroup, ExpressPanelDto expressPanel) {
+    private ExpressPanelDto createDto(Long idPanel, Long idGroup, ExpressPanelDto expressPanel, Long idUser) {
         ExpressPanelDto dto = new ExpressPanelDto();
         dto.setIdExpress(idPanel);
         dto.setIdGroup(idGroup);
@@ -174,7 +179,7 @@ public class ExpressPanelController {
         dto.setIdType(expressPanel.getIdType());
         dto.setBody(expressPanel.getBody());
         dto.setAttachments(expressPanel.getAttachments());
-        dto.setFiles(fileUploadService.save(expressPanel.getAttachments()));
+        dto.setFiles(fileUploadService.save(expressPanel.getAttachments(), idUser));
         return dto;
     }
 

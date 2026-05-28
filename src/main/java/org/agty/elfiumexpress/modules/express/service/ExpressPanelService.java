@@ -48,8 +48,8 @@ public class ExpressPanelService {
     public void removeFiles(Long idPanel, Long idUser) {
         List<UploadedFile> uploadedFiles = getFiles(idPanel);
         for (UploadedFile uploadedFile : uploadedFiles) {
-            thumbsRepository.deleteThumbByFile(uploadedFile.getFile());
-            fileUploadRepository.deleteFile(uploadedFile, 0L);
+            thumbsRepository.deleteThumbByFile(uploadedFile.getFile(), uploadedFile.getIdUser());
+            fileUploadRepository.deleteFile(uploadedFile);
         }
     }
 

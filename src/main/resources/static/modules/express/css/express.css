@@ -16,6 +16,58 @@ a.express-block:visited {
     background: rgba(0, 0, 0, 0.8);
 }
 
+.page-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.page-title h1 {
+    margin: 0;
+}
+
+.page-title-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+}
+
+.page-title-user-link,
+.page-title-user-link:link,
+.page-title-user-link:visited,
+.page-title-user-link:hover {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.page-title-user-link:hover {
+    color: #87d8ff;
+}
+
+.page-title-logout-form {
+    margin: 0;
+}
+
+.page-title-logout-button {
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.55);
+    color: #ffb15f;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.page-title-logout-button:hover {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
 .express-block:hover {
     box-shadow: 0 0 10px #fff, 0 0 10px #000;
 
@@ -102,6 +154,17 @@ a.express-group-add-button:hover {
     .express-block-title {
         background: rgba(60, 28, 0, 0.8);
         font-size: 16px;
+    }
+}
+
+@media (max-width: 860px) {
+    .page-title {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-title-user {
+        margin-left: 0;
     }
 }
 
@@ -495,4 +558,3 @@ img.image-blank {
     color: #1A9CFF; /*#0051ff;*/
     font-weight: bold;
 }
-

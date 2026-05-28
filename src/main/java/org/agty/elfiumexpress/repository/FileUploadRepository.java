@@ -25,20 +25,22 @@ public class FileUploadRepository {
         this.storageService = storageService;
     }
 
-    public UploadedFile store(MultipartFile file) {
-        UploadedFile uploadedFile = UploadedFileUtils.multipartFileCheckAndConvertToUploadedFile(file, 0L);
+    public UploadedFile store(MultipartFile file, long idUser) {
+        UploadedFile uploadedFile = UploadedFileUtils.multipartFileCheckAndConvertToUploadedFile(file, idUser);
+        uploadedFile.setIdUser(idUser);
 
-        if (storageService.store(file, getStorePath(uploadedFile, 0L))) {
+        if (storageService.store(file, getStorePath(uploadedFile, idUser))) {
             return uploadedFile;
         }
 
         return null;
     }
 
-    public Long save(UploadedFile uploadedFile) {
+    public Long save(UploadedFile uploadedFile, long idUser) {
         if (uploadedFile == null || !uploadedFile.hasFile()) return null;
 
         Arguments arguments = Arguments.builder().setTable("{files}")
+                .setData("id_user", idUser)
                 .setData("name", uploadedFile.getName())
                 .setData("file", uploadedFile.getFile())
                 .setData("content_type", uploadedFile.getContentType())
@@ -63,13 +65,13 @@ public class FileUploadRepository {
         }
     }
 
-    public UploadedFile findByName(String filename) {
+    public UploadedFile findByName(String filename, long idUser) {
         SqlRow row;
         try (AgtySQLPool.PooledAgtySQL sql = ConnectionPool.POOL.borrow()) {
             row = sql.sql().fetch(
                     Arguments.builder()
                             .setTable("{files}")
-                            .setWhere("file = '%s'", AgtyUtils.hencode(filename))
+                            .setWhere("file = '%s' AND id_user = %d", AgtyUtils.hencode(filename), idUser)
             );
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -81,9 +83,9 @@ public class FileUploadRepository {
         return "users/" + idUser + "/" + uploadedFile.getFile();
     }
 
-    public void deleteFile(UploadedFile uploadedFile, long idUser) {
+    public void deleteFile(UploadedFile uploadedFile) {
         try {
-            Files.deleteIfExists(Path.of("content/files/users/" + idUser + "/" + uploadedFile.getFile()));
+            Files.deleteIfExists(Path.of("content/files/users/" + uploadedFile.getIdUser() + "/" + uploadedFile.getFile()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

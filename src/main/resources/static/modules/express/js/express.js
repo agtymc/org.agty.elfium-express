@@ -129,12 +129,7 @@ function changePanelType() {
 function viewPanel(idType, idPanel) {
     if (!idType || !idPanel) return;
 
-    let data = {
-        'idType': idType,
-        'idPanel': idPanel
-    };
-
-    api('/api/v1/express/view', 'POST', data, function (answer) {
+    api('/api/v1/express/view/' + idPanel, 'GET', null, function (answer) {
         AgtyDialog.open({
             'title': answer.title,
             'content': answer.content,

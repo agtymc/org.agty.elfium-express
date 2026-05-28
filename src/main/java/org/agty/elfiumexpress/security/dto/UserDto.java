@@ -91,4 +91,37 @@ public class UserDto implements Serializable {
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
+
+    public String getFullName() {
+        StringBuilder fullName = new StringBuilder();
+
+        if (firstName != null && !firstName.isBlank()) {
+            fullName.append(firstName.trim());
+        }
+        if (lastName != null && !lastName.isBlank()) {
+            if (!fullName.isEmpty()) {
+                fullName.append(' ');
+            }
+            fullName.append(lastName.trim());
+        }
+        if (thirdName != null && !thirdName.isBlank()) {
+            if (!fullName.isEmpty()) {
+                fullName.append(' ');
+            }
+            fullName.append(thirdName.trim());
+        }
+
+        return fullName.toString();
+    }
+
+    public String getDisplayName() {
+        String fullName = getFullName();
+        if (!fullName.isBlank()) {
+            return fullName;
+        }
+        if (login != null && !login.isBlank()) {
+            return login;
+        }
+        return email;
+    }
 }

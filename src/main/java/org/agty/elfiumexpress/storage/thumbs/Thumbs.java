@@ -9,6 +9,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Iterator;
 
 public class Thumbs {
@@ -97,6 +99,10 @@ public class Thumbs {
         iwp.setCompressionQuality(getQuality() > 0 ? getQuality() : 0.75f);
 
         File file = new File(getDestination());
+        Path parent = file.toPath().getParent();
+        if (parent != null && !Files.exists(parent)) {
+            Files.createDirectories(parent);
+        }
         FileImageOutputStream output = new FileImageOutputStream(file);
         writer.setOutput(output);
 

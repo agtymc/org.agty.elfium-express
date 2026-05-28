@@ -2,6 +2,7 @@ package org.agty.elfiumexpress.modules.express.view.files;
 
 import org.agty.elfiumexpress.modules.express.view.Files;
 import org.agty.elfiumexpress.storage.entity.UploadedFile;
+import org.agty.elfiumexpress.storage.utils.ContentUtils;
 import org.agty.utils.AgtyUtils;
 
 public class Image implements Files {
@@ -13,7 +14,7 @@ public class Image implements Files {
         content.append(     "<img src=\"/content/files/").append(file.getFile()).append("\" >");
         content.append( "</a>");
         content.append( "<div class=\"express-image-title\">");
-        content.append(     file.getName());
+        content.append(     ContentUtils.escapeHtml(file.getName()));
         content.append(     " (");
         content.append(         AgtyUtils.filesizeToTitle(file.getSize(), "en"));
         content.append(     ")");

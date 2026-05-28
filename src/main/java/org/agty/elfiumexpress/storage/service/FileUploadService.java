@@ -16,14 +16,14 @@ public class FileUploadService {
         this.fileUploadRepository = fileUploadRepository;
     }
 
-    public List<UploadedFile> save(MultipartFile[] files) {
+    public List<UploadedFile> save(MultipartFile[] files, long idUser) {
         List<UploadedFile> uploadedFiles = new LinkedList<UploadedFile>();
 
         if (files == null) return uploadedFiles;
 
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
-                UploadedFile uploadedFile = fileUploadRepository.store(file);
+                UploadedFile uploadedFile = fileUploadRepository.store(file, idUser);
                 if (uploadedFile != null) uploadedFiles.add(uploadedFile);
             }
         }
@@ -31,7 +31,7 @@ public class FileUploadService {
         return uploadedFiles;
     }
 
-    public UploadedFile getFile(String filename) {
-        return fileUploadRepository.findByName(filename);
+    public UploadedFile getFile(String filename, long idUser) {
+        return fileUploadRepository.findByName(filename, idUser);
     }
 }

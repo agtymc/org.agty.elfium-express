@@ -2,22 +2,17 @@ package org.agty.elfiumexpress.modules.express.view.files;
 
 import org.agty.elfiumexpress.modules.express.view.Files;
 import org.agty.elfiumexpress.storage.entity.UploadedFile;
-import org.agty.elfiumexpress.storage.service.FileSystemStorageService;
-import org.agty.elfiumexpress.storage.service.StorageService;
-import org.springframework.context.annotation.Bean;
+import org.agty.elfiumexpress.storage.utils.ContentUtils;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Arrays;
 
 public class Text implements Files {
     @Override
     public String getContent(UploadedFile file) {
         //TODO: нихуя не безопасно!
-        return readFile("content/files/users/0/" + file.getFile());
+        return readFile("content/files/users/" + file.getIdUser() + "/" + file.getFile());
     }
 
     public String getContentBlock(UploadedFile file) {
@@ -27,7 +22,7 @@ public class Text implements Files {
     public String getContentTextarea(UploadedFile file) {
         StringBuilder block = new StringBuilder();
         block.append("<textarea class='express-file-text-area'>");
-        block.append(getContent(file));
+        block.append(ContentUtils.escapeHtml(getContent(file)));
         block.append("</textarea>");
         return getBlock(file, block.toString());
     }

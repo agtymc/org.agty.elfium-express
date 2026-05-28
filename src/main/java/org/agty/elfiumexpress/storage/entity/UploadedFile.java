@@ -2,6 +2,7 @@ package org.agty.elfiumexpress.storage.entity;
 
 public class UploadedFile {
     private Long idFile;
+    private Long idUser;
     private String name;
     private String file;
     private String contentType;
@@ -26,6 +27,14 @@ public class UploadedFile {
 
     public void setIdFile(Long idFile) {
         this.idFile = idFile;
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
     public String getName() {
@@ -68,6 +77,7 @@ public class UploadedFile {
     public String toString() {
         return "UploadedFile{" +
                 "idFile=" + idFile +
+                ", idUser=" + idUser +
                 ", name='" + name + '\'' +
                 ", file='" + file + '\'' +
                 ", contentType='" + contentType + '\'' +
