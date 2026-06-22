@@ -26,6 +26,7 @@
     <div class="page-title">
         <h1 th:text="${title}"></h1>
         <div class="page-title-user" th:if="${currentUser != null}">
+            <a href="/admin" class="page-title-user-link" th:if="${currentUser.hasRole('ROLE_ADMIN')}">Админка</a>
             <a href="/profile" class="page-title-user-link" th:text="${currentUser.displayName}"></a>
             <form th:action="@{/logout}" method="post" class="page-title-logout-form">
                 <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />

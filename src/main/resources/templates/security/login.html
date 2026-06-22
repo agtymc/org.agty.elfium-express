@@ -24,6 +24,10 @@
               <div class="blue">Регистрация завершена. Теперь можно войти.</div>
           </div>
 
+          <div th:if="${param.setupComplete}">
+              <div class="blue">Первый администратор создан. Теперь можно войти.</div>
+          </div>
+
           <div class="horizontal-field">
             <label for="username">Логин</label>
             <input type="text" name="username" id="username" required />
@@ -35,7 +39,7 @@
           </div>
 
           <div class="center horizontal-field">
-                <a href="/registration" class="submit">Регистрация</a>
+                <a href="/registration" class="submit" th:if="${publicRegistrationAllowed}">Регистрация</a>
                 <input type="submit" value="Войти" class="login-button" />
           </div>
       </form>

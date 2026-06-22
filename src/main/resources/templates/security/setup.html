@@ -6,13 +6,12 @@
 <body>
   <div class="form-block">
     <div class="form-block-inner">
-      <form th:action="@{/registration}" th:object="${userRegistrationDto}" method="post" enctype="multipart/form-data">
+      <form th:action="@{/setup}" th:object="${userRegistrationDto}" method="post">
           <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
           <h1 class="center" th:text="${title}"></h1>
 
-          <!-- error message -->
-          <div th:if="${param.error}">
-              <div class="red">Не верный логин или пароль</div>
+          <div class="blue">
+            Создайте первого пользователя. Он будет зарегистрирован как администратор.
           </div>
 
           <div th:if="${registrationError}">
@@ -25,19 +24,19 @@
           </div>
 
           <div class="horizontal-field">
-            <label for="email">E-mail (используется в качестве логина)</label>
-            <input type="text" name="email" id="email" th:field="*{email}" required />
+            <label for="email">E-mail</label>
+            <input type="text" id="email" th:field="*{email}" required />
             <div class="red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
           </div>
 
           <div class="horizontal-field">
             <label for="pass">Пароль</label>
-            <input type="password" name="password" id="pass" th:field="*{password}" required />
+            <input type="password" id="pass" th:field="*{password}" required />
             <div class="red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
           </div>
 
           <div class="center horizontal-field">
-            <input type="submit" value="Зарегистрироваться" class="registration-button" />
+            <input type="submit" value="Создать администратора" class="registration-button" />
           </div>
       </form>
     </div>

@@ -39,4 +39,8 @@ public class ExpressGroupService {
     public void sort(SortBody[] bodies, Long idUser) {
         expressGroupRepository.sort(bodies, idUser);
     }
+
+    public void ensureRootGroup(Long idUser) {
+        expressGroupRepository.ensureRootGroup(idUser);
+    }
 }

@@ -26,4 +26,4 @@ Recent history uses short, imperative commit messages such as `Change number of 
 When you create a new file for the project, add it to Git immediately instead of leaving it untracked.
 
 ## Security & Configuration Tips
-Do not commit real credentials or user content. Keep working values in `config/config.ini` first, and update `config/config.ini-sample` only as a sanitized template for Git. Treat `content/` as environment-specific data as well.
+Do not commit real credentials or user content. Treat `config/config.ini` as the primary configuration file: make real changes there first. Update `config/config.ini-sample` only secondarily, as a sanitized template for Git that mirrors the structure without real values. Treat `content/` as environment-specific data as well.

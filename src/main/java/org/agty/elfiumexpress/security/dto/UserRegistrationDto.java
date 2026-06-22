@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class UserRegistrationDto {
-    private String firstName;
     private String lastName;
     private String thirdName;
     private String login;
@@ -19,14 +18,6 @@ public class UserRegistrationDto {
     private String password;
 
     public UserRegistrationDto() {}
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
 
     public String getLastName() {
         return lastName;

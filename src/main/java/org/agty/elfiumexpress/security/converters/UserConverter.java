@@ -3,17 +3,13 @@ package org.agty.elfiumexpress.security.converters;
 import org.agty.agtysql.interfaces.SqlRow;
 import org.agty.elfiumexpress.security.dto.UserDto;
 import org.agty.elfiumexpress.security.entity.User;
-import org.agty.elfiumexpress.security.role.Role;
-
-import java.util.List;
-
 public final class UserConverter {
     private UserConverter() {
     }
 
     public static User rowToEntity(SqlRow row) {
         User user = new User();
-        user.setId(row.isSet("id_users") ? row.getLong("id_users") : row.getLong("id_user"));
+        user.setId(row.getLong("id_user"));
         user.setFirstName(row.getString("first_name"));
         user.setLastName(row.getString("second_name"));
         user.setThirdName(row.getString("third_name"));
@@ -21,13 +17,12 @@ public final class UserConverter {
         user.setEmail(row.getString("email"));
         user.setPassword(row.getString("password"));
         user.setDisabled(row.getBoolean("disabled"));
-        user.setRoles(List.of(new Role("ROLE_USER")));
         return user;
     }
 
     public static UserDto rowToDto(SqlRow row) {
         UserDto dto = new UserDto();
-        dto.setId(row.isSet("id_users") ? row.getLong("id_users") : row.getLong("id_user"));
+        dto.setId(row.getLong("id_user"));
         dto.setFirstName(row.getString("first_name"));
         dto.setLastName(row.getString("second_name"));
         dto.setThirdName(row.getString("third_name"));
@@ -35,7 +30,6 @@ public final class UserConverter {
         dto.setEmail(row.getString("email"));
         dto.setPassword(row.getString("password"));
         dto.setDisabled(Boolean.TRUE.equals(row.getBoolean("disabled")));
-        dto.setRoles(List.of(new Role("ROLE_USER")));
         return dto;
     }
 

@@ -5,6 +5,7 @@ import org.agty.elfiumexpress.security.role.Role;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 public class UserDto implements Serializable {
     @Serial
@@ -95,14 +96,17 @@ public class UserDto implements Serializable {
     public String getFullName() {
         StringBuilder fullName = new StringBuilder();
 
-        if (firstName != null && !firstName.isBlank()) {
-            fullName.append(firstName.trim());
-        }
         if (lastName != null && !lastName.isBlank()) {
             if (!fullName.isEmpty()) {
                 fullName.append(' ');
             }
             fullName.append(lastName.trim());
+        }
+        if (firstName != null && !firstName.isBlank()) {
+            if (!fullName.isEmpty()) {
+                fullName.append(' ');
+            }
+            fullName.append(firstName.trim());
         }
         if (thirdName != null && !thirdName.isBlank()) {
             if (!fullName.isEmpty()) {
@@ -123,5 +127,18 @@ public class UserDto implements Serializable {
             return login;
         }
         return email;
+    }
+
+    public boolean hasRole(String roleName) {
+        Collection<Role> roleList = roles == null ? List.of() : roles;
+        return roleList.stream().anyMatch(role -> roleName.equals(role.getName()));
+    }
+
+    public String getPrimaryRoleTitle() {
+        Collection<Role> roleList = roles == null ? List.of() : roles;
+        return roleList.stream()
+                .findFirst()
+                .map(role -> role.getTitle() != null && !role.getTitle().isBlank() ? role.getTitle() : role.getName())
+                .orElse("");
     }
 }

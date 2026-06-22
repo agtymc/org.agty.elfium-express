@@ -51,8 +51,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/login", "/registration**", "/js/**", "/css/**", "/img/**").permitAll()
-                                .requestMatchers("/admin").hasRole("ADMIN")
+                                .requestMatchers("/login", "/registration**", "/setup**", "/js/**", "/css/**", "/img/**").permitAll()
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
 
                 ).formLogin(form -> form

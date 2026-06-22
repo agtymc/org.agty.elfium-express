@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <th:block th:replace="~{index/head.html::indexHead}"></th:block>
+  <link rel="stylesheet" href="/css/admin.css?v=1" data-precedence="next"/>
+</head>
+<body class="admin-body">
+  <div class="admin-shell">
+    <th:block th:replace="~{admin/fragments.html :: sidebar(${adminSection})}"></th:block>
+    <main class="admin-main">
+      <th:block th:replace="~{admin/fragments.html :: topbar(${title}, ${currentUser})}"></th:block>
+
+      <section class="admin-grid admin-metrics">
+        <div class="admin-card metric-card">
+          <div class="metric-title">Пользователи</div>
+          <div class="metric-value" th:text="${usersCount}"></div>
+        </div>
+        <div class="admin-card metric-card">
+          <div class="metric-title">Администраторы</div>
+          <div class="metric-value" th:text="${adminsCount}"></div>
+        </div>
+        <div class="admin-card metric-card">
+          <div class="metric-title">Роли</div>
+          <div class="metric-value" th:text="${rolesCount}"></div>
+        </div>
+        <div class="admin-card metric-card">
+          <div class="metric-title">ROLE_USER</div>
+          <div class="metric-value" th:text="${regularUsersCount}"></div>
+        </div>
+      </section>
+
+      <section class="admin-card">
+        <div class="admin-card-header">
+          <h2>Последние пользователи</h2>
+          <a href="/admin/users" class="admin-button-link">Открыть список</a>
+        </div>
+        <table class="admin-table">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>E-mail</th>
+            <th>Роль</th>
+            <th class="admin-actions-col"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="user : ${recentUsers}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.displayName}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.primaryRoleTitle}"></td>
+            <td class="admin-actions-col"><a th:href="@{'/admin/users/' + ${user.id}}" class="admin-text-link">Редактировать</a></td>
+          </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

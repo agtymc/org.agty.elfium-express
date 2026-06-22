@@ -67,6 +67,10 @@ public class UserDetailsCustom implements UserDetails {
         return user;
     }
 
+    public boolean hasRole(String roleName) {
+        return authorities.stream().anyMatch(authority -> roleName.equals(authority.getAuthority()));
+    }
+
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         Collection<Role> roleList = roles == null ? List.of() : roles;
         return roleList.stream()

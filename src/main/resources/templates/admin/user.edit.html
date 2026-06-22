@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <th:block th:replace="~{index/head.html::indexHead}"></th:block>
+  <link rel="stylesheet" href="/css/admin.css?v=1" data-precedence="next"/>
+</head>
+<body class="admin-body">
+  <div class="admin-shell">
+    <th:block th:replace="~{admin/fragments.html :: sidebar(${adminSection})}"></th:block>
+    <main class="admin-main">
+      <th:block th:replace="~{admin/fragments.html :: topbar(${title}, ${currentUser})}"></th:block>
+
+      <section class="admin-card admin-form-card">
+        <div class="admin-card-header">
+          <h2>Параметры пользователя</h2>
+          <a href="/admin/users" class="admin-button-link">Назад к списку</a>
+        </div>
+
+        <div th:if="${param.created}">
+          <div class="green">Пользователь создан</div>
+        </div>
+
+        <div th:if="${param.saved}">
+          <div class="green">Изменения сохранены</div>
+        </div>
+
+        <div th:if="${adminUserError}">
+          <div class="red" th:text="${adminUserError}"></div>
+        </div>
+
+        <form th:action="${actionUrl}" th:object="${adminUserDto}" method="post" class="admin-form">
+          <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+          <div class="admin-form-row">
+            <label for="lastName">Имя</label>
+            <input type="text" id="lastName" th:field="*{lastName}" />
+          </div>
+
+          <div class="admin-form-row">
+            <label for="email">E-mail</label>
+            <input type="text" id="email" th:field="*{email}" required />
+            <div class="red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+          </div>
+
+          <div class="admin-form-row">
+            <label for="roleId">Роль</label>
+            <select id="roleId" th:field="*{roleId}">
+              <option value="">Выберите роль</option>
+              <option th:each="role : ${roleOptions}" th:value="${role.id}" th:text="${role.title}"></option>
+            </select>
+          </div>
+
+          <div class="admin-form-row">
+            <label for="newPassword" th:text="${createMode} ? 'Пароль' : 'Новый пароль'"></label>
+            <input type="password" id="newPassword" th:field="*{newPassword}" />
+          </div>
+
+          <div class="admin-form-row">
+            <label for="confirmPassword">Подтверждение пароля</label>
+            <input type="password" id="confirmPassword" th:field="*{confirmPassword}" />
+          </div>
+
+          <div class="admin-form-actions">
+            <input type="submit" th:value="${createMode} ? 'Создать пользователя' : 'Сохранить'" class="admin-submit" />
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

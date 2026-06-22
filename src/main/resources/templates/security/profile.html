@@ -6,43 +6,52 @@
 <body>
   <div class="form-block">
     <div class="form-block-inner profile-block">
-      <div class="profile-header">
-        <h1 class="center" th:text="${title}"></h1>
-        <div class="profile-actions center">
-          <a href="/express" class="submit">Экспресс панель</a>
-          <form th:action="@{/logout}" method="post" class="inline-logout-form">
-            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-            <button type="submit" class="submit logout-button" title="Выйти">&#x23FB;</button>
-          </form>
-        </div>
+      <div class="profile-actions center">
+        <a href="/express" class="submit">Экспресс панель</a>
+        <a href="/admin" class="submit" th:if="${isAdmin}">Админка</a>
+        <form th:action="@{/logout}" method="post" class="inline-logout-form">
+          <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+          <button type="submit" class="submit logout-button" title="Выйти">&#x23FB;</button>
+        </form>
       </div>
 
-      <div class="profile-table">
-        <div class="profile-row">
-          <div class="profile-label">Имя</div>
-          <div class="profile-value" th:text="${userDto.firstName} ?: '-'"></div>
+      <form th:action="@{/profile}" th:object="${userProfileDto}" method="post">
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <h1 class="center" th:text="${title}"></h1>
+
+        <div th:if="${param.saved}">
+          <div class="green center">Профиль сохранен</div>
         </div>
-        <div class="profile-row">
-          <div class="profile-label">Фамилия</div>
-          <div class="profile-value" th:text="${userDto.lastName} ?: '-'"></div>
+
+        <div th:if="${profileError}">
+          <div class="red center" th:text="${profileError}"></div>
         </div>
-        <div class="profile-row">
-          <div class="profile-label">Отчество</div>
-          <div class="profile-value" th:text="${userDto.thirdName} ?: '-'"></div>
+
+        <div class="horizontal-field">
+          <label for="lastName">Имя</label>
+          <input type="text" id="lastName" th:field="*{lastName}" />
         </div>
-        <div class="profile-row">
-          <div class="profile-label">Логин</div>
-          <div class="profile-value" th:text="${userDto.login} ?: '-'"></div>
+
+        <div class="horizontal-field">
+          <label for="email">E-mail</label>
+          <input type="text" id="email" th:field="*{email}" required />
+          <div class="red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
         </div>
-        <div class="profile-row">
-          <div class="profile-label">E-mail</div>
-          <div class="profile-value" th:text="${userDto.email} ?: '-'"></div>
+
+        <div class="horizontal-field">
+          <label for="newPassword">Новый пароль</label>
+          <input type="password" id="newPassword" th:field="*{newPassword}" />
         </div>
-        <div class="profile-row">
-          <div class="profile-label">Роли</div>
-          <div class="profile-value" th:text="${#strings.listJoin(userDto.roles.![name], ', ')}"></div>
+
+        <div class="horizontal-field">
+          <label for="confirmPassword">Подтверждение пароля</label>
+          <input type="password" id="confirmPassword" th:field="*{confirmPassword}" />
         </div>
-      </div>
+
+        <div class="center horizontal-field">
+          <input type="submit" value="Сохранить" class="registration-button" />
+        </div>
+      </form>
     </div>
   </div>
 </body>

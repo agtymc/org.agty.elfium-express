@@ -18,6 +18,7 @@ import java.util.List;
 @Repository
 public class ExpressGroupRepository {
     private static final long ROOT_GROUP_ID = 1L;
+    private static final String ROOT_GROUP_TITLE = "Экспресс панель";
 
     public ExpressGroupDto getById(Long id, Long idUser) {
         try (AgtySQLPool.PooledAgtySQL sql = ConnectionPool.POOL.borrow()) {
@@ -138,6 +139,18 @@ public class ExpressGroupRepository {
                             .setData("r_group", actionItem.getDst())
                             .setData("align", maxAlign != null ? maxAlign + 1 : 0)
                             .setWhere("id_group = %d AND id_user = %d", actionItem.getSrc(), idUser)
+            );
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void ensureRootGroup(Long idUser) {
+        try (AgtySQLPool.PooledAgtySQL sql = ConnectionPool.POOL.borrow()) {
+            sql.sql().executeUpdate(
+                    "INSERT INTO spring_groups (id_group, r_group, title, comment, align, id_user) " +
+                            "VALUES (%d, NULL, '%s', NULL, 0, %d) ON CONFLICT (id_group) DO NOTHING"
+                            .formatted(ROOT_GROUP_ID, ROOT_GROUP_TITLE, idUser)
             );
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -45,11 +45,15 @@ class FlywayMigrationTests {
             assertTrue(tableExists(connection, schema, "spring_thumbs"));
             assertTrue(tableExists(connection, schema, "spring_users_session"));
             assertTrue(tableExists(connection, schema, "spring_users_session_attributes"));
+            assertTrue(tableExists(connection, schema, "spring_roles"));
+            assertTrue(tableExists(connection, schema, "spring_users_roles"));
             assertTrue(columnExists(connection, schema, "spring_files", "id_user"));
 
             assertEquals(3, countRows(connection, schema, "spring_express_type"));
-            assertEquals(1, countRows(connection, schema, "spring_users"));
-            assertEquals(1, countRows(connection, schema, "spring_groups"));
+            assertEquals(0, countRows(connection, schema, "spring_users"));
+            assertEquals(0, countRows(connection, schema, "spring_groups"));
+            assertEquals(2, countRows(connection, schema, "spring_roles"));
+            assertEquals(0, countRows(connection, schema, "spring_users_roles"));
         } finally {
             try (Connection connection = openConnection()) {
                 dropSchema(connection, schema);

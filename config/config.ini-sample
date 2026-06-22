@@ -23,6 +23,10 @@ db.flyway.baseline-version = 1
 db.flyway.baseline-description = Existing schema baseline
 db.flyway.create-schemas = true
 
+# First start
+app.setup.enabled = true
+app.registration.public = false
+
 # Session
 session.cookie.name = SESSION
 session.cookie.secure = false
@@ -34,3 +38,8 @@ session.datasource.minimum-idle = 2
 session.datasource.connection-timeout-ms = 30000
 session.datasource.idle-timeout-ms = 600000
 session.datasource.max-lifetime-ms = 1800000
+session.datasource.keepalive-time-ms = 300000
+session.datasource.validation-timeout-ms = 5000
+session.datasource.initialization-fail-timeout-ms = 1
+session.datasource.jdbc-params = tcpKeepAlive=true&connectTimeout=10&socketTimeout=30
+session.cleanup.cron = 0 */10 * * * *

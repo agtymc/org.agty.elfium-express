@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <th:block th:replace="~{index/head.html::indexHead}"></th:block>
+  <link rel="stylesheet" href="/css/admin.css?v=1" data-precedence="next"/>
+</head>
+<body class="admin-body">
+  <div class="admin-shell">
+    <th:block th:replace="~{admin/fragments.html :: sidebar(${adminSection})}"></th:block>
+    <main class="admin-main">
+      <th:block th:replace="~{admin/fragments.html :: topbar(${title}, ${currentUser})}"></th:block>
+
+      <section class="admin-card">
+        <div class="admin-card-header">
+          <h2>Список пользователей</h2>
+          <div class="admin-card-header-actions">
+            <div class="admin-card-meta" th:text="${'Всего: ' + #lists.size(users)}"></div>
+            <a href="/admin/users/add" class="admin-button-link">Создать пользователя</a>
+          </div>
+        </div>
+
+        <form method="get" action="/admin/users" class="admin-filter-form">
+          <input type="text" name="q" placeholder="Поиск по имени или E-mail" th:value="${query}" />
+          <select name="roleId">
+            <option value="">Все роли</option>
+            <option th:each="role : ${roleOptions}" th:value="${role.id}" th:text="${role.title}" th:selected="${selectedRoleId != null && selectedRoleId == role.id}"></option>
+          </select>
+          <button type="submit" class="admin-filter-button">Найти</button>
+          <a href="/admin/users" class="admin-button-link">Сбросить</a>
+        </form>
+
+        <table class="admin-table">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>E-mail</th>
+            <th>Роль</th>
+            <th class="admin-actions-col"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.displayName}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.primaryRoleTitle}"></td>
+            <td class="admin-actions-col"><a th:href="@{'/admin/users/' + ${user.id}}" class="admin-text-link">Редактировать</a></td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(users)}">
+            <td colspan="5" class="admin-empty">Ничего не найдено</td>
+          </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

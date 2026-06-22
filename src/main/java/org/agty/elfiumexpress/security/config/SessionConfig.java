@@ -10,7 +10,8 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
 @Configuration
 @EnableJdbcHttpSession(
         tableName = "spring_users_session",
-        maxInactiveIntervalInSeconds = 2592000
+        maxInactiveIntervalInSeconds = 2592000,
+        cleanupCron = "0 */10 * * * *"
 )
 public class SessionConfig {
     @Bean

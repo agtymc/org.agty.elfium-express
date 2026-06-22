@@ -14,12 +14,7 @@ public class DataSourceConfig {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setPoolName(LocalConfig.getString("session.datasource.pool-name", "spring-users-session-pool"));
         hikariConfig.setDriverClassName("org.postgresql.Driver");
-        hikariConfig.setJdbcUrl("jdbc:postgresql://%s:%s/%s?currentSchema=%s".formatted(
-                requireString("db.default.server"),
-                requireString("db.default.port"),
-                requireString("db.default.database"),
-                requireString("db.default.schema")
-        ));
+        hikariConfig.setJdbcUrl(buildJdbcUrl());
         hikariConfig.setUsername(requireString("db.default.user"));
         hikariConfig.setPassword(requireString("db.default.password"));
         hikariConfig.setMaximumPoolSize(LocalConfig.getInt("session.datasource.maximum-pool-size", 10));
@@ -27,9 +22,27 @@ public class DataSourceConfig {
         hikariConfig.setConnectionTimeout(LocalConfig.getLong("session.datasource.connection-timeout-ms", 30000));
         hikariConfig.setIdleTimeout(LocalConfig.getLong("session.datasource.idle-timeout-ms", 600000));
         hikariConfig.setMaxLifetime(LocalConfig.getLong("session.datasource.max-lifetime-ms", 1800000));
+        hikariConfig.setKeepaliveTime(LocalConfig.getLong("session.datasource.keepalive-time-ms", 300000));
+        hikariConfig.setValidationTimeout(LocalConfig.getLong("session.datasource.validation-timeout-ms", 5000));
+        hikariConfig.setInitializationFailTimeout(LocalConfig.getLong("session.datasource.initialization-fail-timeout-ms", 1));
         hikariConfig.setAutoCommit(true);
         hikariConfig.setConnectionTestQuery("SELECT 1");
         return new HikariDataSource(hikariConfig);
+    }
+
+    private String buildJdbcUrl() {
+        String jdbcParams = LocalConfig.getString(
+                "session.datasource.jdbc-params",
+                "tcpKeepAlive=true&connectTimeout=10&socketTimeout=30"
+        ).trim();
+
+        return "jdbc:postgresql://%s:%s/%s?currentSchema=%s&%s".formatted(
+                requireString("db.default.server"),
+                requireString("db.default.port"),
+                requireString("db.default.database"),
+                requireString("db.default.schema"),
+                jdbcParams
+        );
     }
 
     private String requireString(String key) {

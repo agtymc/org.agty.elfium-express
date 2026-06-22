@@ -9,11 +9,18 @@ public class Role implements Serializable {
 
     private Long id;
     private String name;
+    private String title;
 
     public Role() {}
 
     public Role(String name) {
         this.name = name;
+    }
+
+    public Role(Long id, String name, String title) {
+        this.id = id;
+        this.name = name;
+        this.title = title;
     }
 
     public Long getId() {
@@ -32,11 +39,20 @@ public class Role implements Serializable {
         this.name = name;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     @Override
     public String toString() {
         return "Role{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", title='" + title + '\'' +
                 '}';
     }
 }
